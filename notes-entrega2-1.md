@@ -28,6 +28,7 @@ De cada categoria s'emmagatzema un identificador únic i un nom. Una comanda és
 
 En una botiga poden treballar molts empleats/des i un empleat/da només pot treballar en una botiga. De cada empleat/da, s'emmagatzema un identificador únic: Nom, cognoms, NIF, Telèfon.
 Si treballa com a cuiner/a o repartidor/a. Per a les comandes de repartiment a domicili interessa guardar qui és el repartidor/a que fa el lliurament de la comanda i la data/hora del moment del lliurament.
+
 Nivell 2
 - Exercici 1 - YouTube
 Tractarem de fer un model senzill de com seria la base de dades per a una versió reduïda de YouTube.
@@ -49,6 +50,7 @@ Un usuari/ària pot crear playlists amb els vídeos que li agraden. Cada playlis
 Un usuari/ària pot escriure comentaris en un vídeo determinat. Cada comentari està identificat per un identificador únic: El text del comentari, la data/hora en la qual es va realitzar.
 
 Un usuari/ària pot marcar un comentari com m'agrada o no m'agrada. Caldrà portar un registre dels usuaris/es que han marcat un comentari com m'agrada/no m'agrada, i en quina data/hora ho van fer.
+
 Nivell 3
 - Exercici 1 - Spotify
 Tractarem de fer un model senzill de com seria la base de dades necessària per a Spotify.
