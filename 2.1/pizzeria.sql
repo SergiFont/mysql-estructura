@@ -1,5 +1,6 @@
-DROP DATABASE pizzeriaSergi IF DATABASE pizzeriaSergi EXISTS
-CREATE DATABASE pizzeriaSergi
+DROP DATABASE IF EXISTS pizzeriaSergi;
+CREATE DATABASE pizzeriaSergi;
+USE pizzeriaSergi;
 
 --
 -- Table structure for table `burgers`
