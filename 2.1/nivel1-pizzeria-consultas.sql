@@ -1,7 +1,7 @@
 -- Pizzeria:
 -- Llista quants productes de tipus “Begudes”. s'han venut en una determinada localitat.
 
-USE pizzeria;
+USE pizzeriaSergi;
 
 SELECT c.city as 'Localidad', sum(od.quantity) as 'Cantidad de bebidas vendidas'
 FROM costumers c
