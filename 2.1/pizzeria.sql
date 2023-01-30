@@ -6,8 +6,6 @@ USE pizzeriaSergi;
 -- Table structure for table `burgers`
 --
 
-DROP TABLE IF EXISTS `burgers`;
-
 CREATE TABLE `burgers` (
   `burger_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -34,7 +32,6 @@ VALUES  (1,'Básica','Todo lo que necesitas',_binary 'https://ep01.epimg.net/elv
 -- Table structure for table `pizzas`
 --
 
-DROP TABLE IF EXISTS `pizzas`;
 CREATE TABLE `pizzas` (
   `pizza_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -62,7 +59,6 @@ VALUES  (1,'Margarita','Básica',_binary 'https://assets.tmecosys.com/image/uplo
 -- Table structure for table `drinks`
 --
 
-DROP TABLE IF EXISTS `drinks`;
 CREATE TABLE `drinks` (
   `drink_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -86,7 +82,6 @@ VALUES  (1,'Agua',_binary 'https://ep01.epimg.net/elviajero/imagenes/2017/11/02/
 -- Table structure for table `costumers`
 --
 
-DROP TABLE IF EXISTS `costumers`;
 CREATE TABLE `costumers` (
   `costumer_id` int NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) NOT NULL,
@@ -129,7 +124,6 @@ VALUES  (2,'Juan','Font','Calle Avenida Juan Carlos num 25',08007,'Barcelona','B
 -- Table structure for table `employee_type`
 --
 
-DROP TABLE IF EXISTS `employee_type`;
 CREATE TABLE `employee_type` (
   `type_id` int NOT NULL AUTO_INCREMENT,
   `description` varchar(45) NOT NULL,
@@ -148,7 +142,6 @@ VALUES  (1,'chef'),
 -- Table structure for table `store`
 --
 
-DROP TABLE IF EXISTS `store`;
 CREATE TABLE `store` (
   `store_id` int NOT NULL AUTO_INCREMENT,
   `address` varchar(80) NOT NULL,
@@ -177,7 +170,6 @@ VALUES  (1,'Calle Margarita num 34',08007,'Barcelona','Barcelona'),
 -- Table structure for table `order_type`
 --
 
-DROP TABLE IF EXISTS `order_type`;
 CREATE TABLE `order_type` (
   `type_id` int NOT NULL AUTO_INCREMENT,
   `description` varchar(45) NOT NULL,
@@ -196,7 +188,6 @@ VALUES  (1,'domicilio'),
 -- Table structure for table `employees`
 --
 
-DROP TABLE IF EXISTS `employees`;
 CREATE TABLE `employees` (
   `employee_id` int NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) NOT NULL,
@@ -243,7 +234,6 @@ VALUES  (1,'Carla','Rodriguez','32567854C','645897235',1,1),
 -- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `order_id` int NOT NULL AUTO_INCREMENT,
   `order_date` datetime NOT NULL,
@@ -302,7 +292,6 @@ VALUES  (1,'2022-01-04 18:45:34',4,NULL,2,NULL,2),
 -- Table structure for table `order_items`
 --
 
-DROP TABLE IF EXISTS `order_items`;
 CREATE TABLE `order_items` (
   `order_id` int NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
@@ -352,7 +341,6 @@ VALUES  (1,28.30),
 -- Table structure for table `order_pizza`
 --
 
-DROP TABLE IF EXISTS `order_pizza`;
 CREATE TABLE `order_pizza` (
   `order_id` int NOT NULL,
   `pizza_id` int NOT NULL,
@@ -407,7 +395,6 @@ VALUES  (1,2,1,11.50),
 -- Table structure for table `order_burger`
 --
 
-DROP TABLE IF EXISTS `order_burger`;
 CREATE TABLE `order_burger` (
   `order_id` int NOT NULL,
   `burger_id` int NOT NULL,
@@ -454,7 +441,6 @@ VALUES  (2,3,1,10.80),
 -- Table structure for table `order_drink`
 --
 
-DROP TABLE IF EXISTS `order_drink`;
 CREATE TABLE `order_drink` (
   `order_id` int NOT NULL,
   `drink_id` int NOT NULL,
