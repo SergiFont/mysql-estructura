@@ -1,10 +1,11 @@
+
+--------------- CREACIÓN DE LA BASE DE DATOS ---------------
+
 DROP DATABASE IF EXISTS pizzeriaSergi;
 CREATE DATABASE pizzeriaSergi;
 USE pizzeriaSergi;
 
---
--- Table structure for table `PIZZA_CATEGORIES`
---
+--------------- CREACIÓN TABLAS Y RELLENO ---------------
 
 CREATE TABLE `pizza_categories` (
   `category_id` TINYINT NOT NULL AUTO_INCREMENT,
@@ -16,9 +17,7 @@ INSERT INTO `pizza_categories` (`category_id`, `name`)
 VALUES  (1, 'básicas'),
         (2, 'especiales');
 
---
--- Table structure for table `products`
---
+
 
 CREATE TABLE `products` (
   `product_id` int NOT NULL AUTO_INCREMENT,
@@ -54,7 +53,7 @@ VALUES  (1,'Margarita', 1, 'Básica','https://assets.tmecosys.com/image/upload/t
         (19,'Sprite',NULL,NULL,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYwh1uonNecub7ZzYlkNnlQL-5KyeevQS3Rw&usqp=CAU',2.50),
         (20,'Nestea',NULL,NULL,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTZgMllz9KLh1zLiEofTiS8aE9AZfbDq0z1Q&usqp=CAU',2.50);
 
--- Table structure for table `costumers`
+
 
 CREATE TABLE `costumers` (
   `costumer_id` int NOT NULL AUTO_INCREMENT,
@@ -68,9 +67,7 @@ CREATE TABLE `costumers` (
   PRIMARY KEY (`costumer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `costumers`
---
+
 
 INSERT INTO `costumers` 
 VALUES  (2,'Juan','Font','Calle Avenida Juan Carlos num 25',08007,'Barcelona','Barcelona','645654897'),
@@ -96,9 +93,7 @@ VALUES  (2,'Juan','Font','Calle Avenida Juan Carlos num 25',08007,'Barcelona','B
 
 
 
---
--- Table structure for table `store`
---
+
 
 CREATE TABLE `store` (
   `store_id` int NOT NULL AUTO_INCREMENT,
@@ -109,9 +104,7 @@ CREATE TABLE `store` (
   PRIMARY KEY (`store_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `store`
---
+
 
 INSERT INTO `store` 
 VALUES  (1,'Calle Margarita num 34',08007,'Barcelona','Barcelona'),
@@ -123,9 +116,7 @@ VALUES  (1,'Calle Margarita num 34',08007,'Barcelona','Barcelona'),
         (7,'Calle Tarragona num 02',43005,'Tarragona','Tarragona'),
         (8,'Calle Reus num 19',43090,'Reus','Tarragona');
 
---
--- Table structure for table `employees`
---
+
 
 CREATE TABLE `employees` (
   `employee_id` int NOT NULL AUTO_INCREMENT,
@@ -141,9 +132,7 @@ CREATE TABLE `employees` (
   CONSTRAINT `fk_employees_store` FOREIGN KEY (`store_id`) REFERENCES `store` (`store_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `employees`
---
+
 
 INSERT INTO `employees` 
 VALUES  (1,'Carla','Rodriguez','32567854C','645897235',1,'chef'),
@@ -167,9 +156,7 @@ VALUES  (1,'Carla','Rodriguez','32567854C','645897235',1,'chef'),
         (19,'David','DeLPozo','58741236F','642397234',8,'chef'),
         (20,'Raquel','DeLPozo','73519546G','643497223',8,'shipper');
 
---
--- Table structure for table `orders`
---
+
 
 CREATE TABLE `orders` (
   `order_id` int NOT NULL AUTO_INCREMENT,
@@ -186,9 +173,7 @@ CREATE TABLE `orders` (
   CONSTRAINT `fk_orders_employees1` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `orders`
---
+
 
 INSERT INTO `orders` 
 VALUES  (1,'2022-01-04 18:45:34',4,NULL,2,NULL,'recoger en tienda'),
@@ -223,9 +208,7 @@ VALUES  (1,'2022-01-04 18:45:34',4,NULL,2,NULL,'recoger en tienda'),
         (30,'2022-01-10 21:35:37',12,'2022-01-10 21:59:37',10,10,'domicilio'),
         (31,'2022-01-10 22:35:37',6,'2022-01-10 22:59:37',11,10,'domicilio');
 
---
--- Table structure for table `order_items`
---
+
 
 CREATE TABLE `order_items` (
   `order_id` int NOT NULL,
@@ -238,9 +221,7 @@ CREATE TABLE `order_items` (
   CONSTRAINT `fk_order_items_products1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `order_items`
---
+
 
 INSERT INTO `order_items` 
 VALUES  (1,2,1),
@@ -335,4 +316,35 @@ VALUES  (1,2,1),
         (31,13,1),
         (31,16,1),
         (31,17,1);
+
+
+
+--------------- QUERYS ---------------
+
+-- Llista quants productes de tipus “Begudes”. s'han venut en una determinada localitat.
+
+USE pizzeriaSergi; 
+SELECT c.city as 'Localidad', sum(oi.quantity) as 'Cantidad de bebidas vendidas' 
+
+FROM costumers c 
+
+JOIN orders o 
+  on c.costumer_id=o.costumer_id 
+
+JOIN order_items oi 
+  on o.order_id=oi.order_id 
+  
+WHERE c.city = 'Barcelona' AND oi.product_id>=16;
+
+
+-- Llista quantes comandes ha efectuat un determinat empleat/da.
+
+SELECT concat(e.first_name,' ', e.surname) as 'Employee', count(o.order_id) as 'Orders' 
+
+FROM employees e 
+
+JOIN orders o 
+  on o.employee_id=e.employee_id 
+
+WHERE e.employee_id=3;
 
