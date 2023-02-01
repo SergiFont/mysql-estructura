@@ -265,6 +265,10 @@ ADD CONSTRAINT `fk_payment_register_subscriptions1`
   ON DELETE NO ACTION
   ON UPDATE CASCADE;
 
+ALTER TABLE `spotify`.`artists_by_music_type` 
+ADD COLUMN `type` ENUM('style1', 'style2') NOT NULL AFTER `artist_id`;
+
+
 
 
 
@@ -307,3 +311,95 @@ VALUES  ('Rhapsody', '\'https://photos.bandsintown.com/large/11452180.jpeg\''),
         ('Survivor', '\'https://akamai.sscdn.co/uploadfile/letras/fotos/4/f/b/a/4fbaa172cd99d42cab36e728d3f06a16.jpg\'');
 
 
+INSERT INTO `spotify`.`playlists` (`user_id`, `title`, `total_songs`, `creation_date`, `status`) 
+VALUES  ('1', 'lista1', '2', '2010-01-02', 'active'),
+        ('2', 'lista3', '2', '2010-01-03', 'active'),
+        ('3', 'lista4', '2', '2010-01-03', 'active'),
+        ('4', 'lista6', '2', '2010-01-03', 'active'),
+        ('5', 'lista7', '2', '2010-01-03', 'active');
+
+INSERT INTO `spotify`.`playlists` (`user_id`, `title`, `total_songs`, `creation_date`, `status`, `delete_date`) 
+VALUES  ('2', 'lista2', '2', '2010-01-02', 'deleted', '2010-01-03'),
+        ('4', 'lista5', '2', '2010-01-03', 'deleted', '2010-01-03');
+
+
+INSERT INTO `spotify`.`artists_by_music_type` (`artist_id`, `type`) 
+VALUES  ('1', 'style1'),
+        ('2', 'style2'),
+        ('3', 'style2'),
+        ('4', 'style1');
+
+INSERT INTO `spotify`.`user_follow_artist` (`user_id`, `artist_id`) 
+VALUES  ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '1');
+
+INSERT INTO `spotify`.`album` (`artist_id`, `title`, `release_date`, `cover_image`) 
+VALUES  ('1', 'album1', '2005-01-01', '\'https://photos.bandsintown.com/large/11452180.jpeg\''),
+        ('2', 'album2', '2005-01-01', '\'https://i.scdn.co/image/ab67616d0000b2735306ed42ae78f317258c51bb\''),
+        ('3', 'album3', '2005-01-01', '\'https://i.ytimg.com/vi/lDK9QqIzhwk/maxresdefault.jpg\''),
+        ('3', 'album4', '2005-01-01', '\'https://i.ytimg.com/vi/lDK9QqIzhwk/maxresdefault.jpg\''),
+        ('4', 'album5', '2005-01-01', '\'https://akamai.sscdn.co/uploadfile/letras/fotos/4/f/b/a/4fbaa172cd99d42cab36e728d3f06a16.jpg\'');
+
+
+INSERT INTO `spotify`.`favourite_albums` (`user_id`, `album_id`) 
+VALUES  ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5');
+
+
+INSERT INTO `spotify`.`songs` (`album_id`, `title`, `duration`, `play_count`) 
+VALUES  ('1', 'song1', '300', '100'),
+        ('1', 'song2', '300', '100'),
+        ('2', 'song3', '250', '80'),
+        ('2', 'song4', '250', '80'),
+        ('3', 'song5', '285', '120'),
+        ('3', 'song6', '285', '120'),
+        ('4', 'song7', '280', '100'),
+        ('4', 'song8', '280', '100'),
+        ('5', 'song9', '310', '85'),
+        ('5', 'song10', '290', '150');
+
+INSERT INTO `spotify`.`favourite_songs` (`user_id`, `song_id`) 
+VALUES  ('1', '1'),
+        ('1', '2'),
+        ('2', '3'),
+        ('2', '4'),
+        ('3', '5'),
+        ('3', '6'),
+        ('4', '7'),
+        ('4', '8'),
+        ('5', '9'),
+        ('5', '10');
+
+
+INSERT INTO `spotify`.`shared_playlists` (`user_id`, `list_id`, `added_song`, `added_date`) 
+VALUES  ('1', '1', '1', '2010-01-02'),
+        ('2', '1', '2', '2010-01-02'),
+        ('2', '3', '3', '2010-01-02'),
+        ('4', '3', '6', '2010-01-02'),
+        ('3', '4', '7', '2010-01-02'),
+        ('5', '4', '8', '2010-01-02'),
+        ('4', '6', '9', '2010-01-02'),
+        ('2', '6', '10', '2010-01-02'),
+        ('5', '7', '4', '2010-01-02'),
+        ('3', '7', '2', '2010-01-02');
+
+
+--------------- QUERY DE PRUEBA ---------------
+
+-- Que usuarios comparten una determinada lista
+
+USE spotify;
+
+SELECT u.user_name as 'Usuario', pl.title as 'Lista'
+FROM users u
+JOIN shared_playlists spl
+	on u.user_id=spl.user_id
+Join playlists pl
+	on spl.list_id=pl.list_id
+WHERE spl.list_id=1
