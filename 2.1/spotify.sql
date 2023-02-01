@@ -1,11 +1,12 @@
----------------CREACIÓN DE LA BASE DE DATOS---------------
+--------------- CREACIÓN DE LA BASE DE DATOS---------------
 
 DROP DATABASE IF EXISTS `spotify`;
 CREATE DATABASE `spotify`;
 USE `spotify` ;
 
 
----------------CREACIÓN DE LAS TABLAS---------------
+--------------- CREACIÓN DE LAS TABLAS---------------
+
 
 CREATE TABLE IF NOT EXISTS `spotify`.`users` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
@@ -36,47 +37,47 @@ CREATE TABLE IF NOT EXISTS `spotify`.`payment_details` (
     FOREIGN KEY (`user_id`)
     REFERENCES `spotify`.`users` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 
 CREATE TABLE IF NOT EXISTS `spotify`.`subscriptions` (
-  `sub_id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `payment_method` INT NOT NULL,
-  `start_date` DATE NOT NULL,
-  `recharge_date` DATE NOT NULL,
-  PRIMARY KEY (`sub_id`),
+  `start_date` DATE NULL,
+  `recharge_date` DATE NULL,
+  `sub_status` ENUM('true', 'false') NOT NULL,
   INDEX `fk_subscriptions_users_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_subscriptions_payment_details1_idx` (`payment_method` ASC) VISIBLE,
+  PRIMARY KEY (`user_id`, `payment_method`),
   CONSTRAINT `fk_subscriptions_users`
     FOREIGN KEY (`user_id`)
     REFERENCES `spotify`.`users` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_subscriptions_payment_details1`
     FOREIGN KEY (`payment_method`)
     REFERENCES `spotify`.`payment_details` (`payment_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 
 CREATE TABLE IF NOT EXISTS `spotify`.`payment_register` (
   `order_id` INT NOT NULL AUTO_INCREMENT,
-  `sub_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
   `pay_date` DATE NOT NULL,
   `price` FLOAT NOT NULL,
   PRIMARY KEY (`order_id`),
-  INDEX `fk_payment_register_subscriptions1_idx` (`sub_id` ASC) VISIBLE,
+  INDEX `fk_payment_register_subscriptions1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_payment_register_subscriptions1`
-    FOREIGN KEY (`sub_id`)
-    REFERENCES `spotify`.`subscriptions` (`sub_id`)
+    FOREIGN KEY (`user_id`)
+    REFERENCES `spotify`.`subscriptions` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 
 CREATE TABLE IF NOT EXISTS `spotify`.`playlists` (
@@ -93,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`playlists` (
     FOREIGN KEY (`user_id`)
     REFERENCES `spotify`.`users` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -118,9 +119,8 @@ CREATE TABLE IF NOT EXISTS `spotify`.`album` (
     FOREIGN KEY (`artist_id`)
     REFERENCES `spotify`.`artist` (`artist_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 
 CREATE TABLE IF NOT EXISTS `spotify`.`songs` (
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`songs` (
     FOREIGN KEY (`album_id`)
     REFERENCES `spotify`.`album` (`album_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -150,12 +150,12 @@ CREATE TABLE IF NOT EXISTS `spotify`.`user_follow_artist` (
     FOREIGN KEY (`user_id`)
     REFERENCES `spotify`.`users` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_follow_artist_artist1`
     FOREIGN KEY (`artist_id`)
     REFERENCES `spotify`.`artist` (`artist_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -163,13 +163,14 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `spotify`.`artists_by_music_type` (
   `type_id` INT NOT NULL AUTO_INCREMENT,
   `artist_id` INT NOT NULL,
+  `type` ENUM('style1', 'style2') NOT NULL,
   INDEX `fk_artists_by_music_type_artist1_idx` (`artist_id` ASC) VISIBLE,
   PRIMARY KEY (`type_id`),
   CONSTRAINT `fk_artists_by_music_type_artist1`
     FOREIGN KEY (`artist_id`)
     REFERENCES `spotify`.`artist` (`artist_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -184,14 +185,13 @@ CREATE TABLE IF NOT EXISTS `spotify`.`favourite_songs` (
     FOREIGN KEY (`user_id`)
     REFERENCES `spotify`.`users` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_favourites_songs1`
     FOREIGN KEY (`song_id`)
     REFERENCES `spotify`.`songs` (`song_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 
 CREATE TABLE IF NOT EXISTS `spotify`.`favourite_albums` (
@@ -204,14 +204,13 @@ CREATE TABLE IF NOT EXISTS `spotify`.`favourite_albums` (
     FOREIGN KEY (`user_id`)
     REFERENCES `spotify`.`users` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_favourite_artist_album1`
     FOREIGN KEY (`album_id`)
     REFERENCES `spotify`.`album` (`album_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 
 CREATE TABLE IF NOT EXISTS `spotify`.`shared_playlists` (
@@ -227,54 +226,22 @@ CREATE TABLE IF NOT EXISTS `spotify`.`shared_playlists` (
     FOREIGN KEY (`user_id`)
     REFERENCES `spotify`.`users` (`user_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_shared_playlists_playlists1`
     FOREIGN KEY (`list_id`)
     REFERENCES `spotify`.`playlists` (`list_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE,
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_shared_playlists_songs1`
     FOREIGN KEY (`added_song`)
     REFERENCES `spotify`.`songs` (`song_id`)
     ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
----------------MEJORAS EN LA BASE DE DATOS---------------
-ALTER TABLE `spotify`.`subscriptions` 
-ADD COLUMN `sub_status` ENUM('true', 'false') NOT NULL AFTER `payment_method`;
-ALTER TABLE `spotify`.`subscriptions` 
-CHANGE COLUMN `start_date` `start_date` DATE NULL ,
-CHANGE COLUMN `recharge_date` `recharge_date` DATE NULL ;
-ALTER TABLE `spotify`.`payment_register` 
-DROP FOREIGN KEY `fk_payment_register_subscriptions1`;
-ALTER TABLE `spotify`.`payment_register` 
-DROP INDEX `fk_payment_register_subscriptions1_idx` ;
-ALTER TABLE `spotify`.`subscriptions` 
-DROP COLUMN `sub_id`,
-CHANGE COLUMN `payment_method` `payment_method` INT NOT NULL AFTER `user_id`,
-DROP PRIMARY KEY,
-ADD PRIMARY KEY (`user_id`, `payment_method`);
-ALTER TABLE `spotify`.`payment_register` 
-ADD INDEX `fk_payment_register_subscriptions1_idx` (`user_id` ASC) VISIBLE;
-;
-ALTER TABLE `spotify`.`payment_register` 
-ADD CONSTRAINT `fk_payment_register_subscriptions1`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `spotify`.`subscriptions` (`user_id`)
-  ON DELETE NO ACTION
-  ON UPDATE CASCADE;
-
-ALTER TABLE `spotify`.`artists_by_music_type` 
-ADD COLUMN `type` ENUM('style1', 'style2') NOT NULL AFTER `artist_id`;
 
 
-
-
-
-
-
----------------RELLENO BASE DE DATOS---------------
+--------------- RELLENO BASE DE DATOS---------------
 INSERT INTO `spotify`.`users` (`user_type`, `email`, `password`, `user_name`, `birth_date`, `gender`, `country`, `cp`) 
 VALUES  ('free', 'email1@mail.com', '12345', 'usuario1', '1990-01-01', 'male', 'spain', '08009'),
         ('premium', 'email2@mail.com', '12345', 'usuario2', '1990-01-01', 'female', 'spain', '08009'),
@@ -294,7 +261,7 @@ VALUES  ('4', 'paypal', 'user4'),
 INSERT INTO `spotify`.`subscriptions` (`user_id`, `start_date`, `recharge_date`, `payment_method`) 
 VALUES  ('2', '2010-01-01', '2010-02-01', '1'),
         ('4', '2010-01-01', '2010-02-01', '3'),
-        ('5', '2010-01-01', '2010-02-01', '4'),
+        ('5', '2010-01-01', '2010-02-01', '4');
 INSERT INTO `spotify`.`subscriptions` (`user_id`, `payment_method`, `sub_status`) 
 VALUES  ('3', '2', 'false');
 
