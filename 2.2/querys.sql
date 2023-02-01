@@ -39,3 +39,12 @@ SELECT p.nombre as 'Producto' FROM producto p JOIN fabricante f on p.codigo_fabr
 SELECT p.nombre as 'Producto' FROM producto p JOIN fabricante f on p.codigo_fabricante=f.codigo WHERE f.nombre='Hewlett-Packard' ORDER BY p.precio ASC LIMIT 1;
 -- Retorna tots els productes de la base de dades que tenen un preu major o igual al producte més car del fabricant Lenovo.
 -- Llesta tots els productes del fabricant Asus que tenen un preu superior al preu mitjà de tots els seus productes.
+-- Retorna un llistat amb el primer cognom, segon cognom i el nom de tots els/les alumnes. El llistat haurà d'estar ordenat alfabèticament de menor a major pel primer cognom, segon cognom i nom.
+-- Esbrina el nom i els dos cognoms dels alumnes que no han donat d'alta el seu número de telèfon en la base de dades.
+-- Retorna el llistat dels alumnes que van néixer en 1999.
+-- Retorna el llistat de professors/es que no han donat d'alta el seu número de telèfon en la base de dades i a més el seu NIF acaba en K.
+-- Retorna el llistat de les assignatures que s'imparteixen en el primer quadrimestre, en el tercer curs del grau que té l'identificador 7.
+-- Retorna un llistat dels professors/es juntament amb el nom del departament al qual estan vinculats. El llistat ha de retornar quatre columnes, primer cognom, segon cognom, nom i nom del departament. El resultat estarà ordenat alfabèticament de menor a major pels cognoms i el nom.
+-- Retorna un llistat amb el nom de les assignatures, any d'inici i any de fi del curs escolar de l'alumne/a amb NIF 26902806M.
+-- Retorna un llistat amb el nom de tots els departaments que tenen professors/es que imparteixen alguna assignatura en el Grau en Enginyeria Informàtica (Pla 2015).
+-- Retorna un llistat amb tots els alumnes que s'han matriculat en alguna assignatura durant el curs escolar 2018/2019.
