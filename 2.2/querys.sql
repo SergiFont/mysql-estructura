@@ -39,12 +39,12 @@ SELECT p.nombre as 'Producto' FROM producto p JOIN fabricante f on p.codigo_fabr
 SELECT p.nombre as 'Producto' FROM producto p JOIN fabricante f on p.codigo_fabricante=f.codigo WHERE f.nombre='Hewlett-Packard' ORDER BY p.precio ASC LIMIT 1;
 -- Retorna tots els productes de la base de dades que tenen un preu major o igual al producte més car del fabricant Lenovo.
 -- Llesta tots els productes del fabricant Asus que tenen un preu superior al preu mitjà de tots els seus productes.
--- Retorna un llistat amb el primer cognom, segon cognom i el nom de tots els/les alumnes. El llistat haurà d'estar ordenat alfabèticament de menor a major pel primer cognom, segon cognom i nom.
--- Esbrina el nom i els dos cognoms dels alumnes que no han donat d'alta el seu número de telèfon en la base de dades.
--- Retorna el llistat dels alumnes que van néixer en 1999.
--- Retorna el llistat de professors/es que no han donat d'alta el seu número de telèfon en la base de dades i a més el seu NIF acaba en K.
--- Retorna el llistat de les assignatures que s'imparteixen en el primer quadrimestre, en el tercer curs del grau que té l'identificador 7.
--- Retorna un llistat dels professors/es juntament amb el nom del departament al qual estan vinculats. El llistat ha de retornar quatre columnes, primer cognom, segon cognom, nom i nom del departament. El resultat estarà ordenat alfabèticament de menor a major pels cognoms i el nom.
--- Retorna un llistat amb el nom de les assignatures, any d'inici i any de fi del curs escolar de l'alumne/a amb NIF 26902806M.
--- Retorna un llistat amb el nom de tots els departaments que tenen professors/es que imparteixen alguna assignatura en el Grau en Enginyeria Informàtica (Pla 2015).
--- Retorna un llistat amb tots els alumnes que s'han matriculat en alguna assignatura durant el curs escolar 2018/2019.
+USE universidad; SELECT apellido1 as 'Apellido', apellido2 as 'Segundo apellido', nombre FROM persona WHERE tipo='alumno' ORDER BY apellido1 ASC, apellido2 ASC, nombre ASC;
+SELECT nombre, CONCAT(apellido1, ' ', apellido2) as 'Apellidos' FROM persona WHERE telefono IS NULL;
+SELECT nombre, CONCAT(apellido1, ' ', apellido2) as 'Apellidos' FROM persona WHERE tipo='alumno' AND fecha_nacimiento BETWEEN '1998-12-31' AND '1999-12-31';
+SELECT nombre, CONCAT(apellido1, ' ', apellido2) as 'Apellidos' FROM persona WHERE tipo='profesor' AND telefono IS NULL AND nif LIKE '%k';
+SELECT a.nombre FROM grado g JOIN asignatura a on g.id=a.id_grado WHERE a.cuatrimestre=1 AND g.id=7 AND a.curso=3;
+SELECT p.apellido1 as 'Primer Apellido', p.apellido2 as 'Segundo Apellido', p.nombre as 'Nombre', d.nombre as 'Departamento' FROM persona p JOIN profesor pr on p.id=pr.id_profesor JOIN departamento d on pr.id_departamento=d.id WHERE p.tipo='profesor' ORDER BY p.apellido1 AND p.apellido2 AND p.nombre;
+SELECT a.nombre as 'Asignatura', ce.anyo_inicio as 'Año de inicio', ce.anyo_fin as 'Año de fin de curso' FROM persona p JOIN alumno_se_matricula_asignatura asm on p.id=asm.id_alumno JOIN curso_escolar ce on ce.id=asm.id_curso_escolar JOIN asignatura a on a.id=asm.id_asignatura WHERE p.tipo='alumno' AND p.nif='26902806M';
+SELECT DISTINCT d.nombre as 'Departamentos' FROM departamento d JOIN profesor pr on d.id=pr.id_departamento JOIN asignatura a on a.id=pr.id_profesor JOIN grado g on g.id=a.id_grado WHERE g.nombre='Grado en Ingeniería Informática (Plan 2015)';
+SELECT DISTINCT CONCAT(p.nombre, ' ', p.apellido1, ' ', p.apellido2) as 'Alumnos matriculados en el curso 2018' FROM persona p JOIN alumno_se_matricula_asignatura asm on p.id=asm.id_alumno JOIN curso_escolar ce on ce.id=asm.id_curso_escolar WHERE ce.anyo_inicio=2018;
