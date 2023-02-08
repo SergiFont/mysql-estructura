@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS `spotify`.`users` (
   `email` VARCHAR(150) NOT NULL,
   `password` VARCHAR(150) NOT NULL,
   `user_name` VARCHAR(150) NOT NULL,
-  `birth_date` VARCHAR(150) NOT NULL,
-  `gender` VARCHAR(150) NULL,
+  `birth_date` DATE NOT NULL, -- Lo tenía como VARCHAR, cambiado a DATE por corrección.
+  `gender` ENUM('male', 'female', 'other') NULL, -- lo tenía como VARCHAR. Cambiado a tipo ENUM a través de la corrección.
   `country` VARCHAR(150) NOT NULL,
   `cp` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`user_id`))
